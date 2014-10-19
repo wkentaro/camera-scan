@@ -37,7 +37,9 @@ def onmouse(event, x, y, flags, param):
 
     for point in points:
         cv2.circle(img=img, center=point, radius=5,
-                color=(0,255,0), thickness=2)
+                color=(0,255,0), thickness=-1, lineType=cv2.CV_AA)
+    cv2.polylines(img=img, pts=np.array([points]),
+            isClosed=1, color=(0, 200, 0), lineType=cv2.CV_AA)
     cv2.imshow("origin", img)
 
 if __name__ == '__main__':
@@ -51,7 +53,9 @@ if __name__ == '__main__':
     initial_frame = origin.copy()
     for point in points:
         cv2.circle(img=initial_frame, center=point, radius=5,
-                color=(0,255,0), thickness=2)
+                color=(0,255,0), thickness=-1, lineType=cv2.CV_AA)
+    cv2.polylines(img=initial_frame, pts=np.array([points]),
+            isClosed=1, color=(0, 200, 0), lineType=cv2.CV_AA)
     cv2.imshow("origin", initial_frame)
 
     while True:
