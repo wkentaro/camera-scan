@@ -47,7 +47,7 @@ if __name__ == '__main__':
     cv2.setMouseCallback("origin", onmouse)
 
     # load original frame
-    origin = cv2.imread('00.png', 1)
+    origin = cv2.imread('test.png', 1)
 
     # Show initial frame
     initial_frame = origin.copy()
