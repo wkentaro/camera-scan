@@ -5,6 +5,7 @@ import cv2
 
 # local modules
 import scan
+import contour
 
 dragging_flags = np.array([False, False, False, False])
 points = [(100, 100), (100, 200), (200, 200), (200, 100)]
@@ -21,7 +22,7 @@ def onmouse(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         # start dragging
         for idx, point in enumerate(points):
-            if get_distance(point, (x,y)) < 7:
+            if get_distance(point, (x,y)) < 10:
                 points[idx] = (x, y)
                 dragging_flags[idx] = True
     elif event == cv2.EVENT_LBUTTONUP:
@@ -51,6 +52,8 @@ if __name__ == '__main__':
 
     # Show initial frame
     initial_frame = origin.copy()
+    points = contour.get_largest_contour(img=initial_frame)
+    print points
     for point in points:
         cv2.circle(img=initial_frame, center=point, radius=5,
                 color=(0,255,0), thickness=-1, lineType=cv2.CV_AA)
@@ -63,6 +66,7 @@ if __name__ == '__main__':
         if key == 27:
             sys.exit()
         elif key == ord('s'):
+            print points
             four_points = np.array(points)
             scanned = scan.get_scanned(img=origin,
                     four_points=four_points,
