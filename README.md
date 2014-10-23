@@ -1,9 +1,14 @@
-pyapps
-======
-
-Applications made with Python.
-
-
 camera-scan
+===
+Reshape taken pictures with camera.
+
+
+Usage
 ---
-![demo-scan](camera-scan/demo-scan.png)
+```
+$ python main.py <+img filename+>
+```
+
+Demo
+---
+![camera-scan](demo-scan.png)
