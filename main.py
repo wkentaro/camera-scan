@@ -4,8 +4,8 @@ import sys
 import cv2
 
 # local modules
-import scan
-import contour
+import _scan
+import _contour
 
 dragging_flags = np.array([False, False, False, False])
 points = [(100, 100), (100, 200), (200, 200), (200, 100)]
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     # Show initial frame
     initial_frame = origin.copy()
-    points = contour.get_largest_contour(img=initial_frame)
+    points = _contour.get_largest_contour(img=initial_frame)
     print points
     for point in points:
         cv2.circle(img=initial_frame, center=point, radius=5,
@@ -68,7 +68,7 @@ if __name__ == '__main__':
         elif key == ord('s'):
             print points
             four_points = np.array(points)
-            scanned = scan.get_scanned(img=origin,
+            scanned = _scan.get_scanned(img=origin,
                     four_points=four_points,
                     output_shape=(200, 200))
             cv2.imshow('scanned', scanned)
