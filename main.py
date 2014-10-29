@@ -4,7 +4,7 @@ import sys
 import cv2
 
 # local modules
-import _scan
+import _warp
 import _contour
 
 dragging_flags = np.array([False, False, False, False])
@@ -53,8 +53,8 @@ if __name__ == '__main__':
     # Show initial frame
     initial_frame = origin.copy()
     points = _contour.get_largest_contour(img=initial_frame)
-    print points
     for point in points:
+        point = tuple(point[0])
         cv2.circle(img=initial_frame, center=point, radius=5,
                 color=(0,255,0), thickness=-1, lineType=cv2.CV_AA)
     cv2.polylines(img=initial_frame, pts=np.array([points]),
@@ -66,11 +66,11 @@ if __name__ == '__main__':
         if key == 27:
             sys.exit()
         elif key == ord('s'):
-            print points
-            four_points = np.array(points)
-            scanned = _scan.get_scanned(img=origin,
+            four_points = np.reshape(points, (len(points),2))
+            # four_points = np.array(points)
+            warped = _warp.get_warped(img=origin,
                     four_points=four_points,
                     output_shape=(200, 200))
-            cv2.imshow('scanned', scanned)
+            cv2.imshow('warped', warped)
 
     cv2.destroyAllWindows()

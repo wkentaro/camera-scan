@@ -1,31 +1,15 @@
 import numpy as np
-
-from skimage import measure
-from skimage import color
+import cv2
 
 
 def get_largest_contour(img):
-    # gray scale
-    gray = color.rgb2gray(img)
+    imgray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # Find contours at a constant value of 0.8
-    contours = measure.find_contours(gray, 0.8)
+    ret, thresh = cv2.threshold(imgray, 127, 255, 0)
+    contours, hierarchy = cv2.findContours(thresh,
+            cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    def get_contour_maxpos(contour):
-        ymax, ymin = contour[:, 0].max(), contour[:, 0].min()
-        xmax, xmin = contour[:, 1].max(), contour[:, 1].min()
-        return (xmax, xmin), (ymax, ymin)
+    cnt = contours[1]
+    approx = cv2.approxPolyDP(cnt, 0.1*cv2.arcLength(cnt, True), True)
 
-    def calc_area(contour):
-        (xmax, xmin), (ymax, ymin) = get_contour_maxpos(contour)
-        area = (xmax - xmin) * (ymax - ymin)
-        return area
-
-    areas = np.array([calc_area(contour) for contour in contours])
-    max_idx = np.where(areas.max())[0][0]
-
-    (xmax, xmin), (ymax, ymin) = get_contour_maxpos(contours[max_idx])
-
-    xmax, xmin, ymax, ymin = map(int, [xmax, xmin, ymax, ymin])
-
-    return [(xmin, ymin), (xmin, ymax), (xmax, ymax), (xmax, ymin)]
+    return approx
