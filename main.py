@@ -44,15 +44,17 @@ def onmouse(event, x, y, flags, param):
     cv2.imshow("origin", img)
 
 if __name__ == '__main__':
-    cv2.namedWindow("origin", 1)
+    cv2.namedWindow("origin", flags=cv2.WINDOW_AUTOSIZE)
     cv2.setMouseCallback("origin", onmouse)
 
     # load original frame
-    origin = cv2.imread('test.png', 1)
+    origin = cv2.imread(sys.argv[1], 1)
 
     # Show initial frame
     initial_frame = origin.copy()
     points = _contour.get_largest_contour(img=initial_frame)
+    if len(points) != 4:
+        points = np.array([[100, 100], [100, 200], [200, 200], [200, 100]])
     for point in points:
         cv2.circle(img=initial_frame, center=tuple(point), radius=5,
                 color=(0,255,0), thickness=-1, lineType=cv2.CV_AA)
@@ -65,11 +67,9 @@ if __name__ == '__main__':
         if key == 27:
             sys.exit()
         elif key == ord('s'):
-            # four_points = np.reshape(points, (len(points),2))
-            # four_points = np.array(points)
             warped = _warp.get_warped(img=origin,
                     four_points=points,
-                    output_shape=(200, 200))
+                    output_shape=(600, 420))
             cv2.imshow('warped', warped)
 
     cv2.destroyAllWindows()
