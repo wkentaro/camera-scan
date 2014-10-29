@@ -11,5 +11,5 @@ def get_largest_contour(img):
 
     cnt = contours[1]
     approx = cv2.approxPolyDP(cnt, 0.1*cv2.arcLength(cnt, True), True)
-
-    return approx
+    return np.reshape(approx, (len(approx), 2))
+#     return approx
