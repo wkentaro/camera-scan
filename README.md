@@ -15,4 +15,4 @@ Demo
 $ python main.py demo-scan.png
 ```
 
-![camera-scan](demo-scan.png)
+![camera-scan](demo.png)
