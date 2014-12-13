@@ -78,9 +78,9 @@ if __name__ == '__main__':
             interpolation=cv2.INTER_AREA)
     # get contour
     points = _contour.get_largest_contour(img=initial_frame)
-    if len(points) != 4:
-        points = np.array([[100, 100], [100, 200],
-                           [200, 200], [200, 100]])
+    # if len(points) != 4:
+    #     points = np.array([[100, 100], [100, 200],
+    #                        [200, 200], [200, 100]])
     for point in points:
         cv2.circle(img=initial_frame, center=tuple(point), radius=5,
                 color=(0, 255, 0), thickness=-1, lineType=cv2.CV_AA)
