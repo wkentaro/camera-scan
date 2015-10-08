@@ -3,6 +3,7 @@
 # main.py
 
 # standard libs
+import os
 import sys
 import argparse
 # installed libs
@@ -11,7 +12,6 @@ import cv2
 # local libs
 import _warp
 import _contour
-import pyutils
 
 
 dragging_flags = np.array([False, False, False, False])
@@ -78,9 +78,9 @@ if __name__ == '__main__':
             interpolation=cv2.INTER_AREA)
     # get contour
     points = _contour.get_largest_contour(img=initial_frame)
-    # if len(points) != 4:
-    #     points = np.array([[100, 100], [100, 200],
-    #                        [200, 200], [200, 100]])
+    if len(points) != 4:
+        points = np.array([[100, 100], [100, 200],
+                           [200, 200], [200, 100]])
     for point in points:
         cv2.circle(img=initial_frame, center=tuple(point), radius=5,
                 color=(0, 255, 0), thickness=-1, lineType=cv2.CV_AA)
@@ -108,9 +108,8 @@ if __name__ == '__main__':
             resized = cv2.resize(src=warped, dsize=dsize,
                     interpolation=cv2.INTER_AREA)
             cv2.imshow(winname='after', mat=resized)
-            filename = pyutils.get_filename_frompath(img_path)
-            filename = pyutils.change_filename(filename=filename,
-                    extension='_warped.png')
-            cv2.imwrite('dst/'+filename, warped*255)
+            filename = os.path.basename(img_path)
+            filename = os.path.splitext(img_path)[0] + '_warped.png'
+            cv2.imwrite(filename, warped*255)
 
     cv2.destroyAllWindows()
